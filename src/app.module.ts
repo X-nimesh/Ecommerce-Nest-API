@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { typeOrmConfigs } from './config/dbConnection.config';
+import { CustomDecoratorModule } from './custom-decorator/custom-decorator.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { typeOrmConfigs } from './config/dbConnection.config';
     UserModule,
     OrdersModule,
     AuthModule,
+    CustomDecoratorModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],

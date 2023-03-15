@@ -9,3 +9,11 @@ interface product {
   quantity: number;
   price: number;
 }
+export class orderDto {
+  qty: number;
+  price: number;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: number;
+}

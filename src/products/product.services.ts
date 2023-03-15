@@ -6,16 +6,19 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Productentity } from './product.entity';
-
+import { message } from 'src/enums/message.enums';
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Productentity)
     private readonly productRepo: Repository<Productentity>,
   ) {}
-  async findAll(): Promise<Productentity[]> {
+  async findAll(): Promise<any> {
     console.log('this.productRepo.find()', this.productRepo.find());
-    return this.productRepo.find();
+    return {
+      data: await this.productRepo.find(),
+      message: message.PRODUCT_FOUND,
+    };
   }
   async create(
     name: string,

@@ -2,6 +2,7 @@ import {
   Delete,
   HttpCode,
   Param,
+  Req,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -19,15 +20,18 @@ export class productController {
 
   @Public()
   @Get()
-  async findAll(): Promise<Productentity[]> {
+  async findAll(
+    @Req() req,
+  ): Promise<{ data: Productentity[]; message: string }> {
+    req.customMessage = 'Found all Products';
     return this.productsService.findAll();
   }
-
   //   @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(200)
   @UsePipes(new ValidationPipe())
-  async create(@Body() body: CreateProductDto): Promise<any> {
+  async create(@Req() req, @Body() body: CreateProductDto): Promise<any> {
+    req.customMessage = 'Product created successfully';
     return this.productsService.create(
       body.name,
       body.decs,
@@ -35,13 +39,14 @@ export class productController {
       body.qty,
     );
   }
-
   @Post('update/:id')
   async update(
+    @Req() req,
     @Param() params,
     @Body()
     body: CreateProductDto,
   ): Promise<any> {
+    req.customMessage = 'Product updated successfully';
     return this.productsService.update(
       params.id,
       body.name,

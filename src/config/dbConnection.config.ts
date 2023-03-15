@@ -1,10 +1,11 @@
 import { join } from 'path';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import pg from 'pg';
 
-export const typeOrmConfigs = (): PostgresConnectionOptions => {
+export const typeOrmConfigs = () => {
   const obj: PostgresConnectionOptions = {
     type: 'postgres',
-    host: process.env.POSTGRES_HOST || 'localhost',
+    host: process.env.POSTGRES_HOST || 'postgres',
     port: parseInt(<string>process.env.POSTGRES_PORT) || 5432,
     username: process.env.POSTGRES_USER || 'postgres',
     password: process.env.POSTGRES_PASSWORD || 'postgres',
@@ -21,6 +22,7 @@ export const typeOrmConfigs = (): PostgresConnectionOptions => {
       ),
     ],
     // synchronize: true,
+    // driver: pg,
   };
 
   return obj;

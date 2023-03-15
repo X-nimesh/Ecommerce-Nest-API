@@ -25,6 +25,10 @@ export class UserController {
   async findAll(@Request() req: any) {
     return this.userService.findAll();
   }
+  @Get(':id')
+  async findOne(@Request() req: any) {
+    return this.userService.findOnebyId(req.params.id);
+  }
   @Public()
   @Post('signup')
   async signup(@Body(new JoinValidatePipe(createUserSchema)) req: any) {

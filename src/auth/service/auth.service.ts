@@ -20,6 +20,10 @@ export class AuthService {
   async login(user: loginUserDto) {
     const userDet = await this.validateUser(user.email, user.password);
     console.log(userDet);
+    if (!userDet) {
+      return null;
+      console.log('user not found');
+    }
     const payload = { email: userDet.email, sub: userDet.id };
     return {
       access_token: this.jwtService.sign(payload),
