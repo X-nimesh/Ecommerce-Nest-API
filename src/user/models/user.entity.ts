@@ -5,6 +5,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 
 @Entity({ name: 'users' })
@@ -17,7 +18,7 @@ export class Userentity extends BaseEntity {
 
   @OneToMany(() => OrdersEntity, (order) => order.user)
   orders: OrdersEntity[];
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()

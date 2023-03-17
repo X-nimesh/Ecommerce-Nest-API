@@ -1,7 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { access } from 'fs';
 // import { Strategy } from 'passport-jwt';
-import { Strategy, Profile } from 'passport-google-oauth20';
+import { Strategy, Profile, VerifyCallback } from 'passport-google-oauth20';
 
 export class googleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor() {
@@ -17,16 +17,28 @@ export class googleStrategy extends PassportStrategy(Strategy, 'google') {
     accessToken: string,
     refreshToken: string,
     profile: Profile,
+    done: VerifyCallback,
   ): Promise<any> {
     const { emails, name, photos } = profile;
-    console.log(profile);
-    return {
-      accessToken,
-      refreshToken,
-      profile,
-      email: emails[0].value,
-      name: name.givenName + ' ' + name.familyName,
-      avatarUrl: photos[0].value,
-    };
+    done(
+      null,
+      {
+        accessToken,
+        refreshToken,
+        profile,
+        email: emails[0].value,
+        name: name.givenName + ' ' + name.familyName,
+        avatarUrl: photos[0].value,
+      },
+      { req: this.request },
+    );
+    // return {
+    //   accessToken,
+    //   refreshToken,
+    //   profile,
+    //   email: emails[0].value,
+    //   name: name.givenName + ' ' + name.familyName,
+    //   avatarUrl: photos[0].value,
+    // };
   }
 }

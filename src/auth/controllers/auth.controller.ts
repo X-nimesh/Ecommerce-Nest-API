@@ -33,8 +33,22 @@ export class AuthController {
   }
   @Public()
   @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
   googleLoginCallback(@Req() req) {
-    console.log(req.user);
-    return 'google login callback';
+    const response = this.authService.googleAuth(req.user);
+    return response;
+  }
+
+  @Public()
+  @Get('facebook')
+  @UseGuards(AuthGuard('facebook'))
+  async fbauth(@Req() req) {
+    return req.user;
+  }
+  @Public()
+  @Get('facebook/callback')
+  @UseGuards(AuthGuard('facebook'))
+  async facbookCallBack(@Req() req) {
+    return this.authService.fbAuth(req.user);
   }
 }

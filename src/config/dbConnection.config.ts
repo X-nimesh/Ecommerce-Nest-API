@@ -5,7 +5,7 @@ import pg from 'pg';
 export const typeOrmConfigs = () => {
   const obj: PostgresConnectionOptions = {
     type: 'postgres',
-    host: process.env.POSTGRES_HOST || 'postgres',
+    host: process.env.POSTGRES_HOST || 'localhost',
     port: parseInt(<string>process.env.POSTGRES_PORT) || 5432,
     username: process.env.POSTGRES_USER || 'postgres',
     password: process.env.POSTGRES_PASSWORD || 'postgres',
