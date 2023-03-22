@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.services';
 import { authRepo } from '../auth.repo';
@@ -19,16 +19,45 @@ export class AuthService {
     }
     return null;
   }
-  async login(user: loginUserDto) {
-    const userDet = await this.validateUser(user.email, user.password);
-    console.log(userDet);
-    if (!userDet) {
-      return null;
-    }
-    const payload = { email: userDet.email, sub: userDet.id };
+
+  generateToken(user) {
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(user, {
+        expiresIn: '1m',
+      }),
+      refresh_token: this.jwtService.sign(user, {
+        expiresIn: '2m',
+      }),
     };
+  }
+
+  async login(user: loginUserDto, sessionID: any) {
+    try {
+      const userDet = await this.validateUser(user.email, user.password);
+      // *email and password not found
+      if (!userDet) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'Invalid email and Password',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      // *generateToken
+      const payload = { email: userDet.email, sub: userDet.id };
+      const tokens = this.generateToken(payload);
+      // *update refresh token
+      const status = await this.authRepo.updateRefreshToken(
+        userDet.id,
+        tokens.refresh_token,
+        sessionID,
+      );
+
+      return tokens;
+    } catch (error: any) {
+      throw new Error(error);
+    }
   }
   async googleAuth(user) {
     const userDet = {
@@ -65,5 +94,44 @@ export class AuthService {
       updatedAt: new Date(),
     };
     return userDet;
+  }
+
+  async refreshToken(body, sessionID) {
+    // return { body };
+    console.log({ data: body, session: sessionID });
+    try {
+      const refresh = this.jwtService.verify(body.refreshToken);
+      console.log(refresh);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'Refresh Token has expired',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    const Session = await this.authRepo.findSession(sessionID);
+    //   console.log(Session);
+    if (Session?.refreshToken !== body.refreshToken) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Invalid refresh token',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const userID = Session?.userId.id;
+    const user = await this.userservice.findOnebyId(userID);
+    const payload = { email: user.email, sub: user.id };
+    const tokens = this.generateToken(payload);
+    // *update refresh token
+    const status = await this.authRepo.updateRefreshToken(
+      user.id,
+      tokens.refresh_token,
+      sessionID,
+    );
+    return tokens;
   }
 }

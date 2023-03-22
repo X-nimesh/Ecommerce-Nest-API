@@ -22,8 +22,18 @@ export class AuthController {
   //   @UseGuards(LocalAppguard)
   @Post('login')
   @HttpCode(200)
-  async login(@Body() body: loginUserDto) {
-    return this.authService.login(body);
+  async login(@Body() body: loginUserDto, @Req() req) {
+    // console.log(`before ${req.session.userid}`);
+    req.session.userid = 'nimesh';
+    // console.log(req.session.userid);
+    return await this.authService.login(body, req.sessionID);
+  }
+
+  @Post('refresh')
+  @Public()
+  @HttpCode(200)
+  async refresh(@Body() body: { refreshToken: string }, @Req() req) {
+    return this.authService.refreshToken(body, req.sessionID);
   }
   @Public()
   @Get('google')

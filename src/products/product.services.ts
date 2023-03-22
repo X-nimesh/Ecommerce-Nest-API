@@ -14,7 +14,7 @@ export class ProductsService {
     private readonly productRepo: Repository<Productentity>,
   ) {}
   async findAll(): Promise<any> {
-    console.log('this.productRepo.find()', this.productRepo.find());
+    console.log('this.productRepo.find()', await this.productRepo.find());
     return {
       data: await this.productRepo.find(),
       message: message.PRODUCT_FOUND,

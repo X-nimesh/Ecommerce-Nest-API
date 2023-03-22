@@ -11,12 +11,13 @@ import { googleStrategy } from './google.strateggy';
 import { JwtStartegy } from './jwt.startegy';
 import { LocalStrategy } from './local.strategy';
 import { googelauth } from './model/googleAuth.entity';
+import { sessionEnity } from './model/session.entity';
 import { AuthService } from './service/auth.service';
 
 @Module({
   imports: [
     UserModule,
-    TypeOrmModule.forFeature([googelauth, Userentity]),
+    TypeOrmModule.forFeature([googelauth, Userentity, sessionEnity]),
     PassportModule,
     JwtModule.register({
       secret: 'secretNimesh',

@@ -21,17 +21,30 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UseGuards(JwtAuthGuard)
+  @Public()
   @Get()
   async findAll(@Request() req: any) {
+    // req.session.visits = req.session.visits ? req.session.visits + 1 : 1;
+
+    console.log(req.session.userid);
+    req.session.userid = 'nimesh';
+    console.log(req.session.rand);
     return this.userService.findAll();
   }
   @Get(':id')
   async findOne(@Request() req: any) {
+    console.log(req.session.rand);
     return this.userService.findOnebyId(req.params.id);
   }
   @Public()
   @Post('signup')
   async signup(@Body(new JoinValidatePipe(createUserSchema)) req: any) {
-    return this.userService.create(req);
+    const userDet = await this.userService.create(req);
+    const response = {
+      id: userDet.id,
+      name: userDet.name,
+      email: userDet.email,
+    };
+    return response;
   }
 }

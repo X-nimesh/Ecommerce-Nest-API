@@ -37,6 +37,20 @@ export class UserService {
     });
   }
   async create(user: Userentity): Promise<Userentity> {
-    return await this.userRepo.save(user);
+    const exist = await this.findOne(user.email);
+    if (exist) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'User already Exists',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    const users = {
+      ...user,
+      refreshToken: '',
+    };
+    return await this.userRepo.save(users);
   }
 }

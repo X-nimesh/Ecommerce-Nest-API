@@ -18,7 +18,7 @@ import { ProductsService } from './product.services';
 export class productController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Public()
+  //   @Public()
   @Get()
   async findAll(
     @Req() req,
