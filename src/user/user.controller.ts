@@ -11,10 +11,13 @@ import { UserService } from './user.services';
 import * as Joi from 'joi';
 import { JoinValidatePipe } from './validation.pipe';
 import { Public } from 'src/auth/decorator';
+import { Roles } from 'src/decorator/roles.decorators';
+import { Role } from 'src/auth/authorization/role.enum';
 export const createUserSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
+  roles: Joi.string().required().valid('admin', 'user', 'guest'),
 });
 @Controller('user')
 export class UserController {
@@ -23,6 +26,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Public()
   @Get()
+  @Roles(Role.Admin)
   async findAll(@Request() req: any) {
     // req.session.visits = req.session.visits ? req.session.visits + 1 : 1;
 
@@ -44,6 +48,7 @@ export class UserController {
       id: userDet.id,
       name: userDet.name,
       email: userDet.email,
+      roles: userDet.roles,
     };
     return response;
   }

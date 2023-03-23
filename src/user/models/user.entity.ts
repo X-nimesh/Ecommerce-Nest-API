@@ -19,6 +19,9 @@ export class Userentity extends BaseEntity {
   @Column()
   name: string;
 
+  @Column()
+  roles: string;
+
   @OneToMany(() => OrdersEntity, (order) => order.user)
   orders: OrdersEntity[];
 

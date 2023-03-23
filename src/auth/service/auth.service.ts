@@ -32,32 +32,32 @@ export class AuthService {
   }
 
   async login(user: loginUserDto, sessionID: any) {
-    try {
-      const userDet = await this.validateUser(user.email, user.password);
-      // *email and password not found
-      if (!userDet) {
-        throw new HttpException(
-          {
-            status: HttpStatus.NOT_FOUND,
-            error: 'Invalid email and Password',
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      }
-      // *generateToken
-      const payload = { email: userDet.email, sub: userDet.id };
-      const tokens = this.generateToken(payload);
-      // *update refresh token
-      const status = await this.authRepo.updateRefreshToken(
-        userDet.id,
-        tokens.refresh_token,
-        sessionID,
+    const userDet = await this.validateUser(user.email, user.password);
+    // *email and password not found
+    if (!userDet) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Invalid email and Password',
+        },
+        HttpStatus.NOT_FOUND,
       );
-
-      return tokens;
-    } catch (error: any) {
-      throw new Error(error);
     }
+    // *generateToken
+    const payload = {
+      email: userDet.email,
+      sub: userDet.id,
+      roles: userDet.roles,
+    };
+    const tokens = this.generateToken(payload);
+    // *update refresh token
+    const status = await this.authRepo.updateRefreshToken(
+      userDet.id,
+      tokens.refresh_token,
+      sessionID,
+    );
+
+    return tokens;
   }
   async googleAuth(user) {
     const userDet = {

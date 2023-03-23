@@ -10,9 +10,12 @@ import {
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Public } from 'src/auth/decorator';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Role } from 'src/auth/authorization/role.enum';
+import { Roles } from 'src/decorator/roles.decorators';
 import { CreateProductDto } from './createProduct.dto';
 import { Productentity } from './product.entity';
 import { ProductsService } from './product.services';
+import { RolesGuard } from 'src/auth/authorization/roles.guard';
 
 @Controller('products')
 export class productController {
@@ -20,6 +23,7 @@ export class productController {
 
   //   @Public()
   @Get()
+  @Roles(Role.Admin, Role.User)
   async findAll(
     @Req() req,
   ): Promise<{ data: Productentity[]; message: string }> {
