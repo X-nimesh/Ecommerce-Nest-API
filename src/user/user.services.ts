@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Userentity } from './models/user.entity';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(
@@ -47,10 +47,14 @@ export class UserService {
         HttpStatus.FORBIDDEN,
       );
     }
+
+    const hashPassword = await bcrypt.hash(user.password, 10);
+    console.log(hashPassword);
     const users = {
       ...user,
       refreshToken: '',
     };
+    users.password = hashPassword;
     return await this.userRepo.save(users);
   }
 }
