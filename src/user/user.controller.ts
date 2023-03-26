@@ -4,7 +4,9 @@ import {
   Get,
   Post,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.services';
@@ -13,6 +15,7 @@ import { JoinValidatePipe } from './validation.pipe';
 import { Public } from 'src/auth/decorator';
 import { Roles } from 'src/decorator/roles.decorators';
 import { Role } from 'src/auth/authorization/role.enum';
+import { FileInterceptor } from '@nestjs/platform-express';
 export const createUserSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
@@ -51,5 +54,11 @@ export class UserController {
       roles: userDet.roles,
     };
     return response;
+  }
+
+  @Post('file')
+  @UseInterceptors(FileInterceptor('file'))
+  async fileupload(@UploadedFile() file: Express.Multer.File) {
+    console.log(file);
   }
 }
