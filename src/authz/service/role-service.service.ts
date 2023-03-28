@@ -18,6 +18,7 @@ export class RoleServiceService {
     @InjectRepository(RolePermissionEntity)
     private readonly rolePermissionEntity: Repository<RolePermissionEntity>,
   ) {}
+  //   *try githubbbb
   async findbyID(id: number): Promise<RolesEnntity> {
     const user = await this.userEntity.findOne({
       where: { id },
