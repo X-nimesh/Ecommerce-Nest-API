@@ -24,10 +24,10 @@ export class AuthService {
   generateToken(user) {
     return {
       access_token: this.jwtService.sign(user, {
-        expiresIn: '1m',
+        expiresIn: '1d',
       }),
       refresh_token: this.jwtService.sign(user, {
-        expiresIn: '2m',
+        expiresIn: '2d',
       }),
     };
   }

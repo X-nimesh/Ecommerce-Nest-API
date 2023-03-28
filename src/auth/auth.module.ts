@@ -21,6 +21,7 @@ import { AuthService } from './service/auth.service';
     PassportModule,
     JwtModule.register({
       secret: 'secretNimesh',
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   controllers: [AuthController],

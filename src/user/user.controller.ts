@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Req,
   Request,
   UploadedFile,
   UseGuards,
@@ -27,9 +28,9 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Public()
+  //   @Public()
   @Get()
-  @Roles(Role.Admin)
+  //   @Roles(Role.Admin)
   async findAll(@Request() req: any) {
     // req.session.visits = req.session.visits ? req.session.visits + 1 : 1;
 
@@ -55,7 +56,6 @@ export class UserController {
     };
     return response;
   }
-
   @Post('file')
   @UseInterceptors(FileInterceptor('file'))
   async fileupload(@UploadedFile() file: Express.Multer.File) {

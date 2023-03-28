@@ -8,7 +8,7 @@ export class JwtStartegy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.SECRET_KEY,
+      secretOrKey: process.env.SECRET_KEY || 'secretNimesh',
     });
   }
   async validate(payload: any) {

@@ -21,9 +21,9 @@ import { RolesGuard } from 'src/auth/authorization/roles.guard';
 export class productController {
   constructor(private readonly productsService: ProductsService) {}
 
-  //   @Public()
+  @Public()
   @Get()
-  @Roles(Role.Admin, Role.User)
+  @Roles(Role.Admin)
   async findAll(
     @Req() req,
   ): Promise<{ data: Productentity[]; message: string }> {
