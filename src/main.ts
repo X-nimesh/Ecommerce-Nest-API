@@ -14,7 +14,7 @@ async function bootstrap() {
       proxy: true,
     }),
   );
-  app.useGlobalPipes(new ValidationPipe());
+  //   app.useGlobalPipes(new ValidationPipe());
   //   app.useGlobalInterceptors(new authzInterceptor());
   //   app.useGlobalInterceptors(new custInterceptor());
   app.enableCors({

@@ -5,7 +5,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { RolePermissionEntity } from './rolePermission.entity';
+import { RolePermissionEntity } from '../rolePermission/rolePermission.entity';
+import { UserRoleEntity } from '../userRole/userRole.entity';
 
 @Entity({ name: 'roles' })
 export class RolesEnntity {
@@ -19,4 +20,7 @@ export class RolesEnntity {
     (rolePermission) => rolePermission.role,
   )
   rolePermission: RolePermissionEntity[];
+
+  @OneToMany(() => UserRoleEntity, (userRole) => userRole.role)
+  userRole: UserRoleEntity[];
 }

@@ -1,36 +1,29 @@
 import {
-  CallHandler,
+  CanActivate,
   ExecutionContext,
   HttpException,
   HttpStatus,
   Injectable,
-  NestInterceptor,
-  UnauthorizedException,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { RoleServiceService } from 'src/authz/service/role-service.service';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from 'src/auth/decorator';
-import { PermissionServiceService } from 'src/authz/service/permission-service.service';
+import { PermissionServiceService } from './service/permission-service.service';
+import { RoleServiceService } from './service/role-service.service';
 
 @Injectable()
-export class authzInterceptor implements NestInterceptor {
+export class authzGuards implements CanActivate {
   constructor(
     private readonly roleService: RoleServiceService,
     private readonly permissionService: PermissionServiceService,
     private reflector: Reflector,
   ) {}
-  async intercept(
-    context: ExecutionContext,
-    next: CallHandler<any>,
-  ): Promise<Observable<any>> {
-    // * checking if route is public or not
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.get<string[]>(
       IS_PUBLIC_KEY,
       context.getHandler(),
     );
     if (isPublic) {
-      return next.handle();
+      return true;
     }
 
     // * if private checking the access
@@ -44,13 +37,14 @@ export class authzInterceptor implements NestInterceptor {
       req.route.path,
       req.method,
     );
+
     // * checking the access
     const persmissionAcess = await this.permissionService.CheckPermission(
-      permission.id,
-      role.id,
+      permission?.id,
+      role?.id,
     );
     if (persmissionAcess) {
-      return next.handle();
+      return true;
     } else {
       // *throw error if no permissionAcess
 

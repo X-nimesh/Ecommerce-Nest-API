@@ -23,7 +23,6 @@ export class productController {
 
   @Public()
   @Get()
-  @Roles(Role.Admin)
   async findAll(
     @Req() req,
   ): Promise<{ data: Productentity[]; message: string }> {

@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Userentity } from 'src/user/models/user.entity';
 import { Repository } from 'typeorm';
-import { PermissionEntity } from '../model/permission.entity';
-import { RolePermissionEntity } from '../model/rolePermission.entity';
-import { RolesEnntity } from '../model/roles.entity';
+import { PermissionEntity } from '../permission/permission.entity';
+import { RolePermissionEntity } from '../rolePermission/rolePermission.entity';
+import { RolesEnntity } from '../roles/roles.entity';
 
 @Injectable()
 export class RoleServiceService {
@@ -23,14 +23,19 @@ export class RoleServiceService {
     const user = await this.userEntity.findOne({
       where: { id },
     });
+    console.log('users', user);
     const userRole = await this.roleEntity.findOne({
       where: { name: user.roles },
     });
+
     return userRole;
   }
   async hasPermission(roleId: number, permissionId: number) {
     const permission = await this.rolePermissionEntity.findOne({
-      where: { permissionId: permissionId, roleId: roleId },
+      where: {
+        // // permissionId: permissionId,
+        roleId: roleId,
+      },
     });
   }
 }

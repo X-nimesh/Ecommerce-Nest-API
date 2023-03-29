@@ -1,20 +1,28 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PermissionEntity } from './model/permission.entity';
-import { RolesEnntity } from './model/roles.entity';
+import { PermissionEntity } from './permission/permission.entity';
+import { RolesEnntity } from './roles/roles.entity';
 import { RoleServiceService } from './service/role-service.service';
 import { PermissionServiceService } from './service/permission-service.service';
 import { Userentity } from 'src/user/models/user.entity';
-import { RolePermissionEntity } from './model/rolePermission.entity';
+import { RolePermissionEntity } from './rolePermission/rolePermission.entity';
+import { ModuleEntity } from './modules/module.entity';
+import { ScreensEntity } from './screen/screens.entity';
+import { ScreenPermissionEntity } from './screenPermission/screenPermission.entity';
+import { ModulesModule } from './modules/modules.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       PermissionEntity,
       RolesEnntity,
-      Userentity,
       RolePermissionEntity,
+      ModuleEntity,
+      ScreensEntity,
+      ScreenPermissionEntity,
+      Userentity,
     ]),
+    ModulesModule,
   ],
   providers: [RoleServiceService, PermissionServiceService],
   exports: [RoleServiceService, PermissionServiceService],

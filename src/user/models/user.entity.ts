@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { sessionEnity } from 'src/auth/model/session.entity';
+import { UserRoleEntity } from 'src/authz/userRole/userRole.entity';
 import { OrdersEntity } from 'src/orders/models/orders.entity';
 import {
   BaseEntity,
@@ -33,4 +34,7 @@ export class Userentity extends BaseEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => UserRoleEntity, (userRole) => userRole.user)
+  userRole: UserRoleEntity[];
 }
