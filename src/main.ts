@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { custInterceptor } from './interceptor/custom.interceptor';
 import * as session from 'express-session';
 import { authzInterceptor } from './interceptor/authz.interceptor';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(
@@ -22,6 +23,15 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
+
+  const config = new DocumentBuilder()
+    .setTitle('Nest API ')
+    .setDescription('Boiler Api using  NEST JS')
+    .addTag('api')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
 }

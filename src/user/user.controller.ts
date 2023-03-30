@@ -17,12 +17,14 @@ import { Public } from 'src/auth/decorator';
 import { Roles } from 'src/decorator/roles.decorators';
 import { Role } from 'src/auth/authorization/role.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 export const createUserSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
   roles: Joi.string().required().valid('admin', 'user', 'guest'),
 });
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

@@ -10,6 +10,7 @@ import { ModuleEntity } from './modules/module.entity';
 import { ScreensEntity } from './screen/screens.entity';
 import { ScreenPermissionEntity } from './screenPermission/screenPermission.entity';
 import { ModulesModule } from './modules/modules.module';
+import { ScreenModule } from './screen/screen.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ModulesModule } from './modules/modules.module';
       Userentity,
     ]),
     ModulesModule,
+    ScreenModule,
   ],
   providers: [RoleServiceService, PermissionServiceService],
   exports: [RoleServiceService, PermissionServiceService],
