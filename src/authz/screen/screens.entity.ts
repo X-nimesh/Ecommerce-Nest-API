@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -19,7 +20,11 @@ export class ScreensEntity {
   @Column({ name: 'desc' })
   desc: string;
 
+  @Column({ name: 'module_id' })
+  moduleId: number;
+
   @ManyToOne(() => ModuleEntity, (module) => module.screen)
+  @JoinColumn({ name: 'module_id' })
   modules: ModuleEntity;
 
   @OneToMany(

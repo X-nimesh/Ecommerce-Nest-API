@@ -11,6 +11,9 @@ import { ScreensEntity } from './screen/screens.entity';
 import { ScreenPermissionEntity } from './screenPermission/screenPermission.entity';
 import { ModulesModule } from './modules/modules.module';
 import { ScreenModule } from './screen/screen.module';
+import { PermissionModule } from './permission/permission.module';
+import { ScreenPermissionModule } from './screenPermission/screen-permission.module';
+import { RolePermissionModule } from './rolePermission/role-permission.module';
 
 @Module({
   imports: [
@@ -25,6 +28,9 @@ import { ScreenModule } from './screen/screen.module';
     ]),
     ModulesModule,
     ScreenModule,
+    PermissionModule,
+    ScreenPermissionModule,
+    RolePermissionModule,
   ],
   providers: [RoleServiceService, PermissionServiceService],
   exports: [RoleServiceService, PermissionServiceService],
