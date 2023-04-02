@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Userentity } from './models/user.entity';
 import * as bcrypt from 'bcrypt';
+import { userDto } from './user.dto';
 @Injectable()
 export class UserService {
   constructor(
@@ -36,7 +37,7 @@ export class UserService {
       },
     });
   }
-  async create(user: Userentity): Promise<Userentity> {
+  async create(user: userDto): Promise<Userentity> {
     const exist = await this.findOne(user.email);
     if (exist) {
       throw new HttpException(

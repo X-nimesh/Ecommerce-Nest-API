@@ -16,5 +16,6 @@ import { ScreenPermissionEntity } from './screenPermission.entity';
   ],
   controllers: [ScreenPermissionController],
   providers: [ScreenPermissionService],
+  exports: [ScreenPermissionService],
 })
 export class ScreenPermissionModule {}

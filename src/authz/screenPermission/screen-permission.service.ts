@@ -18,6 +18,13 @@ export class ScreenPermissionService {
   async getAll(): Promise<ScreenPermissionEntity[]> {
     return await this.screensPermissionRepository.find();
   }
+  async getOne(id: number) {
+    return await this.screensPermissionRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+  }
   async create(data) {
     const { screenId, permissionId } = data;
 

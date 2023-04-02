@@ -1,0 +1,47 @@
+{
+  "userd": 1,
+  "permintted_modules": [
+    {
+      "name": "user",
+      "id": 1,
+      "screens": [
+        {
+          "name": "view user",
+          "id": 2,
+          "permission": [
+            {
+              "url": "/user/",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "name": "create user",
+          "id": 1,
+          "permission": [
+            {
+              "url": "/user/",
+              "method": "POST"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "product",
+      "id": 2,
+      "screens": [
+        {
+          "name": "create products",
+          "id": 4,
+          "permission": [
+            {
+              "url": "/product/",
+              "method": "POST"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

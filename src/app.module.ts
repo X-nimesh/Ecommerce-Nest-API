@@ -28,12 +28,12 @@ import { authzGuards } from './authz/authz.guard';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(typeOrmConfigs()),
-    ProductModule,
-    UserModule,
-    OrdersModule,
     AuthModule,
-    CustomDecoratorModule,
+    UserModule,
     AuthzModule,
+    ProductModule,
+    OrdersModule,
+    CustomDecoratorModule,
   ],
   controllers: [AppController],
   providers: [

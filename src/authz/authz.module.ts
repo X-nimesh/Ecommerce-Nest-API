@@ -14,6 +14,9 @@ import { ScreenModule } from './screen/screen.module';
 import { PermissionModule } from './permission/permission.module';
 import { ScreenPermissionModule } from './screenPermission/screen-permission.module';
 import { RolePermissionModule } from './rolePermission/role-permission.module';
+import { RolesModule } from './roles/roles.module';
+import { AuthzController } from './authz.controller';
+import { AuthzService } from './authz.service';
 
 @Module({
   imports: [
@@ -31,8 +34,10 @@ import { RolePermissionModule } from './rolePermission/role-permission.module';
     PermissionModule,
     ScreenPermissionModule,
     RolePermissionModule,
+    RolesModule,
   ],
-  providers: [RoleServiceService, PermissionServiceService],
+  providers: [RoleServiceService, PermissionServiceService, AuthzService],
   exports: [RoleServiceService, PermissionServiceService],
+  controllers: [AuthzController],
 })
 export class AuthzModule {}

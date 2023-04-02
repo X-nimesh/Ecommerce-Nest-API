@@ -18,6 +18,7 @@ import { Roles } from 'src/decorator/roles.decorators';
 import { Role } from 'src/auth/authorization/role.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
+import { userDto } from './user.dto';
 export const createUserSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
@@ -48,12 +49,12 @@ export class UserController {
   }
   @Public()
   @Post('signup')
-  async signup(@Body(new JoinValidatePipe(createUserSchema)) req: any) {
+  async signup(@Body(new JoinValidatePipe(createUserSchema)) req: userDto) {
     const userDet = await this.userService.create(req);
     const response = {
-      id: userDet.id,
       name: userDet.name,
       email: userDet.email,
+      password: userDet.password,
       roles: userDet.roles,
     };
     return response;
